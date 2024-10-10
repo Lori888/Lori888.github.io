@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>QtScrcpy-电脑操控Android手机的利器</title>
+      <link href="/2024/10/10/QtScrcpy/"/>
+      <url>/2024/10/10/QtScrcpy/</url>
+      
+        <content type="html"><![CDATA[<!-- <div class="video-container">[up主专用，视频内嵌代码贴在这]</div> --><style>.video-container {    position: relative;    width: 100%;    padding-top: 56.25%; /* 16:9 aspect ratio (height/width = 9/16 * 100%) */}.video-container iframe {    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;}</style><h1 id=""><a href="#" class="headerlink" title=""></a>QtScrcpy-电脑操控Android手机的利器</h1><h2 id="1-前提条件"><a href="#1-前提条件" class="headerlink" title="1.前提条件"></a>1.前提条件</h2><ul><li><p>手机开启<strong>开发人员选项</strong>和<strong>USB调试</strong></p><p><em><strong>Tips: 荣耀手机开启方法：设置-&gt;关于手机，连续点击7次“版本号”，直到屏幕提示“您正处于开发者模式！”</strong></em></p></li></ul><h2 id="2-运行环境"><a href="#2-运行环境" class="headerlink" title="2.运行环境"></a>2.运行环境</h2><ul><li><p><code>Android 5+</code>  </p></li><li><p><code>Linux / Windows / MacOS  </code>  </p><p><em><strong>截至 2024-10-10 最新版本：2.2.1 (2024-04-08 发布)</strong></em></p></li></ul><h2 id="3-软件特点"><a href="#3-软件特点" class="headerlink" title="3.软件特点"></a>3.软件特点</h2><ul><li><p>开源软件、全免费</p></li><li><p>支持主流桌面操作系统、支持<strong>简体中文界面</strong></p></li><li><p><strong>绿色免安装</strong>、解压即可使用 (Windows)</p></li><li><p>无侵入 (手机无需root权限)</p></li><li><p>支持<code>USB</code>连接或<code>WIFI</code>连接</p></li><li><p>支持连接多台手机并批量操作</p></li><li><p>性能 (30-60fps)、质量 (1920×1080以上)、低延迟 (35-70ms)</p></li><li><p>支持竖屏、横屏显示</p></li><li><p>支持直接截屏、录屏并保存结果到电脑中</p></li><li><p>支持通过鼠标直接操控手机</p></li><li><p>支持通过电脑键盘直接在手机对话框中输入内容 (仅限英文、数字)</p></li><li><p>支持电脑复制内容 (Ctrl+C) 粘贴 (Ctrl+V) 到手机中</p></li><li><p>支持便捷安装apk：直接拖拽apk到显示窗口即可安装</p></li><li><p>支持传输文件：直接拖拽文件到显示窗口即可发送文件到手机 (屏幕无提示、控制窗口中可看到相关信息、文件存放于手机根目录下)</p></li></ul><h2 id="4-功能一览"><a href="#4-功能一览" class="headerlink" title="4.功能一览"></a>4.功能一览</h2><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAOxZwedZodhYNKRwRZgHNIJpeIh4mcAAmLGMRvKEDhQESiQIFm52o4BAAMCAAN5AAM2BA.png" alt="image-20241010145547413"></p><h2 id="5-安装运行"><a href="#5-安装运行" class="headerlink" title="5.安装运行"></a>5.安装运行</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>1.下载软件包（<em><strong>下载地址见文末</strong></em>）</p><p>2.解压软件包 ，运行解压后目录中的<code>QtScrcpy.exe</code></p><h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><ul><li><a href="https://github.com/barry-ran/QtScrcpy">项目GitHub</a></li><li><a href="https://github.com/barry-ran/QtScrcpy/blob/dev/README_zh.md">官方文档</a></li><li><a href="https://pan.quark.cn/s/f9c477565a65">夸克网盘下载</a></li><li><a href="https://pan.baidu.com/s/13r5fM0HYXufXuCSu_Navrg?pwd=kfma">百度网盘下载</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开源软件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Android </tag>
+            
+            <tag> 开源 </tag>
+            
+            <tag> 投屏 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Windows10 记要</title>
       <link href="/2024/10/09/Windows10/"/>
       <url>/2024/10/09/Windows10/</url>
@@ -51,9 +80,9 @@
             
             <tag> Android </tag>
             
-            <tag> 开源软件 </tag>
+            <tag> 开源 </tag>
             
-            <tag> 宝藏软件 </tag>
+            <tag> 宝藏 </tag>
             
             <tag> 流媒体 </tag>
             
@@ -138,7 +167,7 @@
       
         <tags>
             
-            <tag> 宝藏软件 </tag>
+            <tag> 宝藏 </tag>
             
             <tag> 流媒体 </tag>
             
