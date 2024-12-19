@@ -4,6 +4,37 @@
   
     
     <entry>
+      <title>IDEA中设置SpringBoot应用使用本地Tomcat启动</title>
+      <link href="/2024/12/19/IDEA%E4%B8%AD%E8%AE%BE%E7%BD%AESpringBoot%E5%BA%94%E7%94%A8%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0Tomcat%E5%90%AF%E5%8A%A8/"/>
+      <url>/2024/12/19/IDEA%E4%B8%AD%E8%AE%BE%E7%BD%AESpringBoot%E5%BA%94%E7%94%A8%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0Tomcat%E5%90%AF%E5%8A%A8/</url>
+      
+        <content type="html"><![CDATA[<!-- <div class="video-container">[up主专用，视频内嵌代码贴在这]</div> --><style>.video-container {    position: relative;    width: 100%;    padding-top: 56.25%; /* 16:9 aspect ratio (height/width = 9/16 * 100%) */}.video-container iframe {    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;}</style><h1 id=""><a href="#" class="headerlink" title=""></a>IDEA中设置SpringBoot应用使用本地Tomcat启动</h1><h2 id="1-条件与环境"><a href="#1-条件与环境" class="headerlink" title="1.条件与环境"></a>1.条件与环境</h2><h3 id="1-1-前提条件"><a href="#1-1-前提条件" class="headerlink" title="1.1 前提条件"></a>1.1 前提条件</h3><p>在<code>IDEA</code>中可成功运行的<code>SpringBootWebApplication</code></p><h3 id="1-2-运行环境"><a href="#1-2-运行环境" class="headerlink" title="1.2 运行环境"></a>1.2 运行环境</h3><table><thead><tr><th>平台&#x2F;软件</th><th>版本</th></tr></thead><tbody><tr><td>操作系统</td><td>Windows 10 企业版 22H2 19045.4046 64位</td></tr><tr><td>IDEA</td><td>2023.2.4 (Ultimate Edition)</td></tr><tr><td>Tomcat</td><td>11.0.2</td></tr><tr><td>SpringBoot</td><td>3.3.5</td></tr><tr><td>Spring</td><td>6.1.14</td></tr></tbody></table><h2 id="2-步骤"><a href="#2-步骤" class="headerlink" title="2.步骤"></a>2.步骤</h2><h3 id="2-1-安装Tomcat"><a href="#2-1-安装Tomcat" class="headerlink" title="2.1 安装Tomcat"></a>2.1 安装<code>Tomcat</code></h3><p>1.到官网下载<code>Tomcat</code>【<a href="https://tomcat.apache.org/download-11.cgi">点击直达</a>】，根据偏好选择版本，这里选择<code>Windows zip</code>版本：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBYGdjxzEoW42az0RPRqOan6580EMdAAKAxjEbF5UgU-7abhmoS9LpAQADAgADeQADNgQ.png" alt="image-20241219113925150"></p><p>下载后解压到本地目录。</p><p>2.编辑<code>conf/server.xml</code>, 在<code>Connector</code>节点中添加属性<code>URIEncoding=&quot;UTF-8&quot;</code>以避免中文乱码：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBYWdjx1a1Pa1pzzYuZNlkeDY6tvTTAAKBxjEbF5UgU02caMvuF7HjAQADAgADeQADNgQ.png" alt="image-20241219114751475"></p><h3 id="2-2-IDEA设置"><a href="#2-2-IDEA设置" class="headerlink" title="2.2 IDEA设置"></a>2.2 <code>IDEA</code>设置</h3><p>1.依次点击菜单【<code>Run</code>】-【<code>Edit Configurations…</code>】:</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBZWdjyCGjBQwsP630lKv07da7kPZkAAKFxjEbF5UgU0Z_j7R7d4TTAQADAgADeQADNgQ.png" alt="image-20241219151509463"></p><p>2.在【<code>Run/Debug Configurations</code>】窗口，点击左上角【<code>+</code>】，在列表中选择【<code>Tomcat Server</code>】-【<code>Local</code>】：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBY2djx7KTNjRrbJTYGFUWieEh4lsLAAKDxjEbF5UgU67QDugRDn9nAQADAgADeQADNgQ.png" alt="image-20241219122634332"></p><p>3.点击右侧窗口【<code>Server</code>】标签页下的【<code>Configure…</code>】，选择本地<code>Tomcat</code>所在路径：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBZGdjx8RyrdKkQM9JOnOvFPF2f1_mAAKExjEbF5UgUwz6Y83k_G2_AQADAgADeQADNgQ.png" alt="image-20241219135856736"></p><p>点击【<code>OK</code>】回到【<code>Server</code>】标签页，添加的<code>Tomcat</code>出现在<code>Application server</code>列表中：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBZmdjyDSRUKibaHEV-n8DdnKLHUeSAAKGxjEbF5UgU69NHxUVHG2BAQADAgADeQADNgQ.png" alt="image-20241219135932661"></p><p><em><strong>Tips：再次点击【Configure…】可添加其他版本的Tomcat，添加后可在Application server列表中进行切换</strong></em></p><p>4.点击【<code>Deployment</code>】来到该标签页，依次点击【<code>+</code>】-【<code>Artfact…</code>】，选择<code>SpringBoot</code>项目：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBZ2djyE0trUtlMjvmX_hF0QjmYP9nAAKHxjEbF5UgUxpqgeIxNkK-AQADAgADeQADNgQ.png" alt="image-20241219140014542"></p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBaGdjyF1Jjazyd-VHI4E7D7eyej2nAAKIxjEbF5UgUxWVaJV4uZM3AQADAgADeQADNgQ.png" alt="image-20241219140052315"></p><p>点击【<code>OK</code>】回到【<code>Deployment</code>】标签页，添加的部署包出现在列表中，【<code>Application context</code>】根据实际情况可改可不改：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBaWdjyG1v3W3CwA_f4yp49AgoJVLSAAKJxjEbF5UgU0tqLHDF9LlbAQADAgADeQADNgQ.png" alt="image-20241219140140917"></p><p>5.点击【<code>OK</code>】回到【<code>Server</code>】标签页，按需设置<code>VM、JRE、HTTP</code>端口等，设置完成后点击【<code>OK</code>】：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBamdjyH2fYNsM9UiCbIWyryesRlrkAAKKxjEbF5UgU1WLAtIwiSNZAQADAgADeQADNgQ.png" alt="image-20241219140538864"></p><p>接下来，就可以运行或调试了：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBa2djyI3xkRZ9CCynW6IgdD7uDjIDAAKLxjEbF5UgU0QeT3jSHCsGAQADAgADeQADNgQ.png" alt="image-20241219141207859"></p><h1 id="相关资料"><a href="#相关资料" class="headerlink" title="相关资料"></a>相关资料</h1><ul><li><a href="https://spring.io/">Spring官网</a></li><li><a href="https://tomcat.apache.org/">Tomcat官网</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程语言 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Spring </tag>
+            
+            <tag> SpringBoot </tag>
+            
+            <tag> Tomcat </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>JDK下载与安装配置</title>
       <link href="/2024/11/29/JDK/"/>
       <url>/2024/11/29/JDK/</url>
