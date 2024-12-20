@@ -4,6 +4,41 @@
   
     
     <entry>
+      <title>【Troubleshooting】SpringBoot应用部署到Tomcat10运行时NPE</title>
+      <link href="/2024/12/20/SpringBoot%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E5%88%B0Tomcat10%E8%BF%90%E8%A1%8C%E6%97%B6NPE/"/>
+      <url>/2024/12/20/SpringBoot%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E5%88%B0Tomcat10%E8%BF%90%E8%A1%8C%E6%97%B6NPE/</url>
+      
+        <content type="html"><![CDATA[<!-- <div class="video-container">[up主专用，视频内嵌代码贴在这]</div> --><style>.video-container {    position: relative;    width: 100%;    padding-top: 56.25%; /* 16:9 aspect ratio (height/width = 9/16 * 100%) */}.video-container iframe {    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;}</style><h1 id=""><a href="#" class="headerlink" title=""></a>【Troubleshooting】SpringBoot应用部署到Tomcat10运行时NPE</h1><h2 id="1-问题描述"><a href="#1-问题描述" class="headerlink" title="1.问题描述"></a>1.问题描述</h2><h3 id="1-1-环境"><a href="#1-1-环境" class="headerlink" title="1.1 环境"></a>1.1 环境</h3><table><thead><tr><th>平台&#x2F;软件</th><th>版本</th></tr></thead><tbody><tr><td>操作系统</td><td>Windows 10 企业版 22H2 19045.4046 64位 &#x2F; Linux version 4.19.90-2107.6.0.0100.oe1.bclinux.x86_64 (mockbuild@compute1) (gcc version 7.3.0 (GCC))</td></tr><tr><td>IDEA</td><td>2023.2.4 (Ultimate Edition)</td></tr><tr><td>JDK</td><td>Java HotSpot(TM) 64-Bit Server VM (build 17.0.13+10-LTS-268, mixed mode, sharing) &#x2F; OpenJDK 64-Bit Server VM (build 17.0.2+8-86, mixed mode, sharing)</td></tr><tr><td>Tomcat</td><td>10.1.31 &#x2F; 11.0.2</td></tr><tr><td>SpringBoot</td><td>3.3.5</td></tr><tr><td>Spring</td><td>6.1.14</td></tr></tbody></table><h3 id="1-2-时间"><a href="#1-2-时间" class="headerlink" title="1.2 时间"></a>1.2 时间</h3><p>2024-12-18</p><h3 id="1-3-背景"><a href="#1-3-背景" class="headerlink" title="1.3 背景"></a>1.3 背景</h3><p>某<code>SpringBoot Web</code>应用，之前使用<code>SpringBoot2 + JDK8 + Tomcat8</code>运行正常，现将其升级使用<code>SpringBoot3 + JDK17 + Tomcat10</code></p><h3 id="1-3-现象"><a href="#1-3-现象" class="headerlink" title="1.3 现象"></a>1.3 现象</h3><p>升级后，在<code>IDEA</code>中<code>SpringBootApplication</code>运行正常，构建成<code>war</code>包部署到服务器上的<code>Tomcat</code>中运行出现<code>NPE</code>异常：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBc2dlRD5hJ-5molwv9vN-lS8F9vPHAALjwDEbXpAoU6a2aCTOfZDmAQADAgADeQADNgQ.png" alt="image-20241220172637593"></p><h2 id="2-分析过程"><a href="#2-分析过程" class="headerlink" title="2.分析过程"></a>2.分析过程</h2><p>由于该应用并非我开发，一开始仅有日志文件，看日志未看出所以然，于是获取该应用的项目工程在<code>IDEA</code>中进行调试；</p><p>在自定义的过滤器类的<code>doFilter</code>方法设置断点，对比2种运行方式的请求所经过的过滤器链：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBdGdlRGNyRHfZfdH2zAaM2V6TtbzgAALlwDEbXpAoU75xAtvUsr3GAQADAgADeQADNgQ.png" alt="image-20241220171028023"></p><p>根据对比发现<code>Tomcat</code>中运行时会多经过<code>ErrorPageFilter</code>，查看其源码得知该过滤器正是如此：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBdWdlRHrDZsEZ4Zj0NFH0krHPXAQWAALmwDEbXpAoU55oECLkS1LCAQADAgADeAADNgQ.png" alt="c264865238a638a56f7de3e8701c9e6"></p><h2 id="3-定位原因"><a href="#3-定位原因" class="headerlink" title="3.定位原因"></a>3.定位原因</h2><p>自定义的过滤器代码中对<code>request、response</code>对象进行了一些判断和包装，根据异常产生的代码行调试发现在<code>Tomcat</code>中运行时由于多经过了<code>ErrorPageFilter</code>从而导致未命中判断条件使得<code>response</code>对象为<code>null</code>：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBdmdlRLKmz2EsA_YUPFlpomDe7rQNAALnwDEbXpAoU8Fg9cmoYruSAQADAgADeAADNgQ.png" alt="image-20241220174651680"></p><h2 id="4-解决方法"><a href="#4-解决方法" class="headerlink" title="4.解决方法"></a>4.解决方法</h2><p>修改自定义的过滤器代码，增加判断条件：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIBd2dlRMDjaQgi8CJ7foa-Pj7BrKmwAALowDEbXpAoU0rl-QABchfgvQEAAwIAA3kAAzYE.png" alt="image-20241220174937198"></p><h2 id="5-经验小结"><a href="#5-经验小结" class="headerlink" title="5.经验小结"></a>5.经验小结</h2><ul><li>仔细查看错误消息和异常堆栈，从异常本身出发、勿妄加揣测（本问题的异常出处其实已很明确，由于该应用并非我开发、一开始仅有日志分析、没有看仔细、导致在分析上浪费了较多时间）</li><li>能在开发环境IDE中调试的优先在IDE中调试，比如在IDEA中会智能折叠异常堆栈、关键信息较为明显，便于定位问题原因</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 编程语言 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+            <tag> Spring </tag>
+            
+            <tag> SpringBoot </tag>
+            
+            <tag> Tomcat </tag>
+            
+            <tag> Troubleshooting </tag>
+            
+            <tag> NPE </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>IDEA中设置SpringBoot应用使用本地Tomcat启动</title>
       <link href="/2024/12/19/IDEA%E4%B8%AD%E8%AE%BE%E7%BD%AESpringBoot%E5%BA%94%E7%94%A8%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0Tomcat%E5%90%AF%E5%8A%A8/"/>
       <url>/2024/12/19/IDEA%E4%B8%AD%E8%AE%BE%E7%BD%AESpringBoot%E5%BA%94%E7%94%A8%E4%BD%BF%E7%94%A8%E6%9C%AC%E5%9C%B0Tomcat%E5%90%AF%E5%8A%A8/</url>
