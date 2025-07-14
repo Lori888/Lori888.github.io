@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>GitHub 2FA 笔记</title>
+      <link href="/2025/07/14/GitHub-2FA/"/>
+      <url>/2025/07/14/GitHub-2FA/</url>
+      
+        <content type="html"><![CDATA[<!-- <div class="video-container">[up主专用，视频内嵌代码贴在这]</div> --><style>.video-container {    position: relative;    width: 100%;    padding-top: 56.25%; /* 16:9 aspect ratio (height/width = 9/16 * 100%) */}.video-container iframe {    position: absolute;    top: 0;    left: 0;    width: 100%;    height: 100%;}</style><h1 id=""><a href="#" class="headerlink" title=""></a>GitHub 2FA 笔记</h1><h1 id="1-2FA是什么"><a href="#1-2FA是什么" class="headerlink" title="1.2FA是什么"></a>1.2FA是什么</h1><p>近日，收到一封来自GitHub的邮件，提示我的账户需要2FA：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC1mh0s-9ROSJ1jXnJp6XcN21CEVktAALvxTEbK5yoUwudrD8q95heAQADAgADeAADNgQ.png" alt="image-20250714150236875"></p><p>关于 2FA (双重身份验证)：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC12h0tAAB5flYFIsvaQZlHa1IwqWDbgAC8MUxGyucqFO6A7GNjF1n_wEAAwIAA3kAAzYE.png" alt="image-20250714150343806"></p><p>点击邮件中的链接来到注册页面：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC2Gh0tBPnB9IEWphpKaEWufg0mLhqAALxxTEbK5yoU0WznMPki6tWAQADAgADeAADNgQ.png" alt="image-20250714151318031"></p><p>经过一些简单认证后，默认会选择通过SMS作为验证方法，但官方选项中没有+86。</p><p>搜索发现主要有修改网页代码和使用浏览器插件这2种方法来解决，我选择后者。</p><h1 id="2-使用Authenticator插件"><a href="#2-使用Authenticator插件" class="headerlink" title="2.使用Authenticator插件"></a>2.使用<code>Authenticator</code>插件</h1><p>1.浏览器安装<code>Authenticator</code>插件：</p><p>访问插件官网【<a href="https://authenticator.cc/">点击直达</a>】，点击【Add to Chrome】：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC2Gh0tBPnB9IEWphpKaEWufg0mLhqAALxxTEbK5yoU0WznMPki6tWAQADAgADeAADNgQ.png" alt="image-20250714151026406"></p><p>安装成功后，浏览器插件栏中将出现插件图标：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC2mh0tDs782j_w0xIEaZ5LL788wQ7AALzxTEbK5yoU-TYqFsMV9WKAQADAgADeAADNgQ.png" alt="image-20250714151122082"></p><p>2.在认证页面选择app方式，会出现1个二维码，点击插件扫描该二维码、扫描后会出现code、将code填入完成认证配置：</p><p><img src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC22h0tE5KXFIBATi72G2uYApXx2-OAAL0xTEbK5yoUwkVIvDGSK5XAQADAgADeQADNgQ.png" alt="image-20250714152722336"></p><h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><ul><li><a href="https://docs.github.com/zh/authentication/securing-your-account-with-two-factor-authentication-2fa/about-two-factor-authentication">GitHub 2FA 官方文档</a></li><li><a href="https://blog.csdn.net/qq_42858057/article/details/141167553?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~PaidSort-2-141167553-blog-135398847.235%5Ev43%5Epc_blog_bottom_relevance_base5&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~BlogCommendFromBaidu~PaidSort-2-141167553-blog-135398847.235%5Ev43%5Epc_blog_bottom_relevance_base5&utm_relevant_index=4">GitHub 2FA中国认证教程</a></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 开源软件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> GitHub </tag>
+            
+            <tag> 2FA </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>打破版本枷锁！MCP SDK成功降级至JDK8，完美兼容老旧系统！支持StreamableHttpServerTransport！</title>
       <link href="/2025/07/11/MCP-sdk-jdk8/"/>
       <url>/2025/07/11/MCP-sdk-jdk8/</url>
