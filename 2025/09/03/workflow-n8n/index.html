@@ -1,0 +1,661 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>n8n笔记：docker部署与基本操作 | 1024部落格</title><meta name="keywords" content="工作流,n8n"><meta name="author" content="程序员老姐姐"><meta name="copyright" content="程序员老姐姐"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="n8n笔记：docker部署与基本操作"><meta name="application-name" content="n8n笔记：docker部署与基本操作"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="n8n笔记：docker部署与基本操作"><meta property="og:url" content="https://lori888.github.io/2025/09/03/workflow-n8n/index.html"><meta property="og:site_name" content="1024部落格"><meta property="og:description" content=".video-container {     position: relative;     width: 100%;     padding-top: 56.25%; &amp;#x2F;* 16:9 aspect ratio (height&amp;#x2F;width &amp;#x3D; 9&amp;#x2F;16 * 100%) *&amp;#x2F; }  .video"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg"><meta property="article:author" content="程序员老姐姐"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg"><meta name="description" content=".video-container {     position: relative;     width: 100%;     padding-top: 56.25%; &amp;#x2F;* 16:9 aspect ratio (height&amp;#x2F;width &amp;#x3D; 9&amp;#x2F;16 * 100%) *&amp;#x2F; }  .video"><link rel="shortcut icon" href="/favicon.ico"><link rel="canonical" href="https://lori888.github.io/2025/09/03/workflow-n8n/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="xxx"/><meta name="baidu-site-verification" content="code-xxx"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?678caa2e995eb6916b08eab560ce8c73";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: undefined,
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"local","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"xxxx","Referer":"https://xx.xx/"},
+  diytitle: {"enable":true,"leaveTitle":"w(ﾟДﾟ)w 不要走！再看看嘛！","backTitle":"♪(^∇^*)欢迎肥来！"},
+  LA51: undefined,
+  greetingBox: undefined,
+  twikooEnvId: '',
+  commentBarrageConfig:undefined,
+  root: '/',
+  preloader: {"source":3},
+  friends_vue_info: undefined,
+  navMusic: true,
+  mainTone: undefined,
+  authorStatus: undefined,
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: true,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: 程序员老姐姐","link":"链接: ","source":"来源: 1024部落格","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-center"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: undefined,
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: '1024部落格',
+  title: 'n8n笔记：docker部署与基本操作',
+  postAI: '',
+  pageFillDescription: 'n8n笔记：docker部署与基本操作, 1.条件与环境, 1.1 前提条件, 1.2 本文运行环境, 2.安装运行, 2.1 docker部署n8n汉化版本, 2.2 以root用户身份进入n8n容器给node用户赋予权限, 2.3 n8n版本升级, 3.n8n基本操作, 3.1 工作流列表页面, 3.1.1 创建、打开工作流等, 3.1.2 删除工作流, 3.1.3 工作流运行情况, 3.2 凭证, 3.3 工作流画布页面, 3.4 节点导入x2F导出和操作菜单, 3.5 添加节点和连线x2F删除连线, 3.6 节点详情页面, 3.7 JavaScriptx2FPython代码调试, 3.8 查看工作流运行日志, 3.9 安装社区节点, 相关链接笔记部署与基本操作条件与环境前提条件已安装网络畅通本文运行环境平台软件版本操作系统虚拟机安装运行部署汉化版本创建存储卷必须创建否则容易因权限等问题导致使用出现问题下载汉化包下载地址点击直达注意如果当前是首次安装选择最新版最新版即可否则选择与版本号一致的版本下载后解压到本地目录记下这个地址例如创建容器时需进行映射首次下载镜像并运行容器映射端口映射路径汉化包路径局域网环境变量说明所有变量详见官方文档设置语言结合汉化包时区和时间相关的功能相关比如定时触发任务其默认值分别为和允许使用而非访问局域网部署时表单测试地址默认为当通过局域网访问时使用将无法弹出测试表单默认使用进行数据存储工作流工作流运行数据都存储于此随着使用数据库会越来越大导致性能下降生产环境最好选择作为数据库是否在数据库启动时进行一次清理是否打开执行结果自动清理执行结果保留多长时间小时设置存储执行结果的最大条数后续只需要通过容器命令或界面进行启停运行后浏览器打开首次进入页面只需第一步注册邮箱等后续步骤可以跳过直接进入操作页面以用户身份进入容器给用户赋予权限注将目录属主和属组变更为否则在工作流中保存文件到下时会提示没有权限版本升级目前更新速度较快当有新版本时将收到消息通知停止正在运行中的容器拉取最新版本镜像删除之前创建的容器重新使用之前的容器运行命令再次进入页面可以看到已经是最新版本了基本操作工作流列表页面创建打开工作流等删除工作流步法先存档再删除工作流运行情况点击该列表中的工作流名称可以查看该工作流的历史运行数据等凭证注凭证通常在使用具体节点时进行配置工作流画布页面特别提醒养成随时点保存的好习惯没有自动保存功能按住键鼠标变成小手状点击鼠标左键可移动画布按住键滚动鼠标滚轮可缩放画布框选多个节点可一起移动复制等节点导入导出和操作菜单导入节点复制节点或节点在工作流画布上粘贴节点导出节点复制节点粘贴到文本文件中添加节点和连线删除连线节点详情页面双击节点或通过节点菜单进入节点详情页面代码调试目前只能通过输出日志的方式进行调试代码中添加代码中添加按打开浏览器调试窗口测试节点查看控制台输出查看工作流运行日志安装社区节点以安装为例是一个功能完善的微信公众号插件包含了素材草稿发布等所有公众号相关功能接口使用它可以很方便地实现自动发布公众号文章的工作流等待安装完成相关链接官网官方文档汉化包工作流夸克度盘',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-04 18:26:25',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 7.3.0"></head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><div id="loading-box" onclick="document.getElementById(&quot;loading-box&quot;).classList.add(&quot;loaded&quot;)"><div class="loading-bg"><img class="loading-img nolazyload" alt="加载头像" src="https://image.joy666.top/file/258a0c99a22a53ebb79a6.png"/><div class="loading-image-dot"></div></div></div><script>const preloader = {
+  endLoading: () => {
+    document.getElementById('loading-box').classList.add("loaded");
+  },
+  initLoading: () => {
+    document.getElementById('loading-box').classList.remove("loaded")
+  }
+}
+window.addEventListener('load',()=> { preloader.endLoading() })
+setTimeout(function(){preloader.endLoading();},10000)
+
+if (true) {
+  document.addEventListener('pjax:send', () => { preloader.initLoading() })
+  document.addEventListener('pjax:complete', () => { preloader.endLoading() })
+}</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.joy666.top/" title="海外分部"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="海外分部"/><span class="back-menu-item-text">海外分部</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://pan.joy666.top/" title="部落网盘"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="部落网盘"/><span class="back-menu-item-text">部落网盘</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.joy666.top/" title="部落图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="部落图床"/><span class="back-menu-item-text">部落图床</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">1024部落格</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a><div id="he-plugin-simple"></div><script>var WIDGET = {
+  "CONFIG": {
+    "modules": "0124",
+    "background": "2",
+    "tmpColor": "FFFFFF",
+    "tmpSize": "16",
+    "cityColor": "FFFFFF",
+    "citySize": "16",
+    "aqiColor": "E8D87B",
+    "aqiSize": "16",
+    "weatherIconSize": "24",
+    "alertIconSize": "18",
+    "padding": "10px 10px 10px 10px",
+    "shadow": "0",
+    "language": "auto",
+    "borderRadius": "20",
+    "fixed": "true",
+    "vertical": "top",
+    "horizontal": "left",
+    "left": "20",
+    "top": "7.1",
+    "key": "df245676fb434a0691ead1c63341cd94"
+  }
+}
+</script><link rel="stylesheet" href="https://widget.qweather.net/simple/static/css/he-simple.css?v=1.4.0"/><script src="https://widget.qweather.net/simple/static/js/he-simple.js?v=1.4.0"></script></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 全部文章</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12947844738&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="https://image.joy666.top/file/03a672bb2b8837721c45b.png" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/03a672bb2b8837721c45b.png"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://image.joy666.top/file/fac183feae10ae6380566.png" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/fac183feae10ae6380566.png"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/2FA/" style="font-size: 1.05rem;">2FA<sup>1</sup></a><a href="/tags/AGI/" style="font-size: 1.05rem;">AGI<sup>4</sup></a><a href="/tags/Android/" style="font-size: 1.05rem;">Android<sup>5</sup></a><a href="/tags/Blog/" style="font-size: 1.05rem;">Blog<sup>4</sup></a><a href="/tags/B%E7%AB%99/" style="font-size: 1.05rem;">B站<sup>1</sup></a><a href="/tags/Cherry-Studio/" style="font-size: 1.05rem;">Cherry Studio<sup>1</sup></a><a href="/tags/Cline/" style="font-size: 1.05rem;">Cline<sup>1</sup></a><a href="/tags/Cursor/" style="font-size: 1.05rem;">Cursor<sup>1</sup></a><a href="/tags/GitHub/" style="font-size: 1.05rem;">GitHub<sup>2</sup></a><a href="/tags/Hexo/" style="font-size: 1.05rem;">Hexo<sup>3</sup></a><a href="/tags/Java/" style="font-size: 1.05rem;">Java<sup>6</sup></a><a href="/tags/LLM/" style="font-size: 1.05rem;">LLM<sup>4</sup></a><a href="/tags/MCP/" style="font-size: 1.05rem;">MCP<sup>9</sup></a><a href="/tags/MCP-Client/" style="font-size: 1.05rem;">MCP Client<sup>1</sup></a><a href="/tags/MCP-Server/" style="font-size: 1.05rem;">MCP Server<sup>1</sup></a><a href="/tags/NPE/" style="font-size: 1.05rem;">NPE<sup>1</sup></a><a href="/tags/Notion/" style="font-size: 1.05rem;">Notion<sup>1</sup></a><a href="/tags/NotionNext/" style="font-size: 1.05rem;">NotionNext<sup>1</sup></a><a href="/tags/PowerShell/" style="font-size: 1.05rem;">PowerShell<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>5</sup></a><a href="/tags/Spring/" style="font-size: 1.05rem;">Spring<sup>2</sup></a><a href="/tags/Spring-AI/" style="font-size: 1.05rem;">Spring AI<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 1.05rem;">SpringBoot<sup>2</sup></a><a href="/tags/Tomcat/" style="font-size: 1.05rem;">Tomcat<sup>2</sup></a><a href="/tags/Troubleshooting/" style="font-size: 1.05rem;">Troubleshooting<sup>1</sup></a><a href="/tags/VSCode/" style="font-size: 1.05rem;">VSCode<sup>2</sup></a><a href="/tags/Win10/" style="font-size: 1.05rem;">Win10<sup>1</sup></a><a href="/tags/YouTube/" style="font-size: 1.05rem;">YouTube<sup>1</sup></a><a href="/tags/iOS/" style="font-size: 1.05rem;">iOS<sup>1</sup></a><a href="/tags/shell/" style="font-size: 1.05rem;">shell<sup>1</sup></a><a href="/tags/uv/" style="font-size: 1.05rem;">uv<sup>1</sup></a><a href="/tags/xapk/" style="font-size: 1.05rem;">xapk<sup>1</sup></a><a href="/tags/%E5%AE%9D%E8%97%8F/" style="font-size: 1.05rem;">宝藏<sup>2</sup></a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" style="font-size: 1.05rem;">工作流<sup>1</sup></a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 1.05rem;">开源<sup>4</sup></a><a href="/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/" style="font-size: 1.05rem;">快捷键<sup>1</sup></a><a href="/tags/%E6%8A%95%E5%B1%8F/" style="font-size: 1.05rem;">投屏<sup>2</sup></a><a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/" style="font-size: 1.05rem;">流媒体<sup>3</sup></a><a href="/tags/%E6%BF%80%E6%B4%BB/" style="font-size: 1.05rem;">激活<sup>1</sup></a><a href="/tags/%E8%B0%83%E8%AF%95/" style="font-size: 1.05rem;">调试<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/09/"><span class="card-archive-list-date">九月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/07/"><span class="card-archive-list-date">七月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/05/"><span class="card-archive-list-date">五月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/04/"><span class="card-archive-list-date">四月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/03/"><span class="card-archive-list-date">三月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2025/02/"><span class="card-archive-list-date">二月 2025</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/12/"><span class="card-archive-list-date">十二月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/11/"><span class="card-archive-list-date">十一月 2024</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">3</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item" id="consoleMusic" onclick="anzhiyu.musicToggle()" title="音乐开关"><a class="music-switch"><i class="anzhiyufont anzhiyu-icon-music"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E4%BD%9C%E6%B5%81/" itemprop="url">工作流</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>工作流</span></a><a class="article-meta__tags" href="/tags/n8n/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>n8n</span></a></span></div></div><h1 class="post-title" itemprop="name headline">n8n笔记：docker部署与基本操作</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2025-09-02T16:00:00.000Z" title="发表于 2025-09-03 00:00:00">2025-09-03</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2025-09-04T10:26:25.510Z" title="更新于 2025-09-04 18:26:25">2025-09-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">1.3k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="n8n笔记：docker部署与基本操作"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为火星"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>火星</span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container" itemscope itemtype="https://lori888.github.io/2025/09/03/workflow-n8n/"><header><a class="post-meta-categories" href="/categories/%E5%B7%A5%E4%BD%9C%E6%B5%81/" itemprop="url">工作流</a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" tabindex="-1" itemprop="url">工作流</a><a href="/tags/n8n/" tabindex="-1" itemprop="url">n8n</a><h1 id="CrawlerTitle" itemprop="name headline">n8n笔记：docker部署与基本操作</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">程序员老姐姐</span><time itemprop="dateCreated datePublished" datetime="2025-09-02T16:00:00.000Z" title="发表于 2025-09-03 00:00:00">2025-09-03</time><time itemprop="dateCreated datePublished" datetime="2025-09-04T10:26:25.510Z" title="更新于 2025-09-04 18:26:25">2025-09-04</time></header><!-- <div class="video-container">
+[up主专用，视频内嵌代码贴在这]
+</div> -->
+
+<style>
+.video-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio (height/width = 9/16 * 100%) */
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+</style>
+
+<h1 id=""><a href="#" class="headerlink" title=""></a>n8n笔记：docker部署与基本操作</h1><h2 id="1-条件与环境"><a href="#1-条件与环境" class="headerlink" title="1.条件与环境"></a>1.条件与环境</h2><h3 id="1-1-前提条件"><a href="#1-1-前提条件" class="headerlink" title="1.1 前提条件"></a>1.1 前提条件</h3><ul>
+<li>已安装Docker</li>
+<li>网络畅通</li>
+</ul>
+<h3 id="1-2-本文运行环境"><a href="#1-2-本文运行环境" class="headerlink" title="1.2 本文运行环境"></a>1.2 本文运行环境</h3><table>
+<thead>
+<tr>
+<th>平台&#x2F;软件</th>
+<th>版本</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>操作系统</td>
+<td>CentOS Linux release 7.9.2009（VMware虚拟机）</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>24.0.7</td>
+</tr>
+<tr>
+<td>n8n</td>
+<td>1.109.1</td>
+</tr>
+</tbody></table>
+<h2 id="2-安装运行"><a href="#2-安装运行" class="headerlink" title="2.安装运行"></a>2.安装运行</h2><h3 id="2-1-docker部署n8n汉化版本"><a href="#2-1-docker部署n8n汉化版本" class="headerlink" title="2.1 docker部署n8n汉化版本"></a>2.1 docker部署n8n汉化版本</h3><p>1.创建存储卷（必须创建、否则容易因权限等问题导致使用出现问题）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create n8n_data</span><br></pre></td></tr></table></figure>
+
+<p>2.下载汉化包：下载地址【<a target="_blank" rel="noopener" href="https://github.com/other-blowsnow/n8n-i18n-chinese/releases">点击直达</a>】</p>
+<p><strong>注意：如果当前是首次安装、选择最新版（2025-09-01最新版1.109.1）即可；否则，选择与n8n版本号一致的版本；</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDFGi5XHKvdjb0QRMsLBr9tNM9baE6AALuFwAC8N3JUbz2XpfRRHVMNgQ.png" alt="image-20250902214842713"></p>
+<p>下载后解压到本地目录，记下这个地址（例如: &#x2F;home&#x2F;n8n&#x2F;editor-ui&#x2F;dist）、创建容器时需进行映射。</p>
+<p>3.首次下载镜像并运行容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name n8n-zh -p 映射端口:5678 \</span><br><span class="line">-v n8n_data:/home/node/.n8n \</span><br><span class="line">-v 映射路径:/data \</span><br><span class="line">-v 汉化包路径:/usr/local/lib/node_modules/n8n/node_modules/n8n-editor-ui/dist \</span><br><span class="line">-e N8N_DEFAULT_LOCALE=zh-CN \</span><br><span class="line">-e GENERIC_TIMEZONE=<span class="string">&quot;Asia/Shanghai&quot;</span> \</span><br><span class="line">-e N8N_SECURE_COOKIE=<span class="literal">false</span> \</span><br><span class="line">-e DB_SQLITE_VACUUM_ON_STARTUP=<span class="literal">true</span> \</span><br><span class="line">-e EXECUTIONS_DATA_PRUNE=<span class="literal">true</span> \</span><br><span class="line">-e EXECUTIONS_DATA_MAX_AGE=168 \</span><br><span class="line">-e EXECUTIONS_DATA_PRUNE_MAX_COUNT=2000 \</span><br><span class="line">-e N8N_HOST=局域网IP</span><br><span class="line">docker.n8n.io/n8nio/n8n</span><br></pre></td></tr></table></figure>
+
+<p>环境变量说明：(所有变量详见<a target="_blank" rel="noopener" href="https://docs.n8n.io/hosting/configuration/environment-variables/">官方文档</a>)</p>
+<ul>
+<li><code>N8N_DEFAULT_LOCALE、GENERIC_TIMEZONE</code> 设置语言（结合汉化包）、时区（和时间相关的功能相关，比如定时触发任务，其默认值分别为<code>en</code>和<code>America/New_York</code>）</li>
+<li><code>N8N_SECURE_COOKIE</code> 允许使用http而非https访问</li>
+<li><strong><code>N8N_HOST</code>: 局域网部署时，表单测试地址URL（默认为localhost，当通过局域网访问时使用localhost将无法弹出测试表单）</strong></li>
+<li><code>DB_SQLITE_VACUUM_ON_STARTUP、EXECUTIONS_DATA_PRUNE、EXECUTIONS_DATA_MAX_AGE、EXECUTIONS_DATA_PRUNE_MAX_COUNT</code>  n8n默认使用<code>sqlLite</code>进行数据存储，工作流、工作流运行数据都存储于此，随着使用，数据库会越来越大导致n8n性能下降；生产环境最好选择<code>PostgreSQL</code>作为数据库。<ul>
+<li><code>DB_SQLITE_VACUUM_ON_STARTUP</code> 是否在数据库启动时进行一次清理</li>
+<li><code>EXECUTIONS_DATA_PRUNE</code> 是否打开执行结果自动清理</li>
+<li><code>EXECUTIONS_DATA_MAX_AGE</code> 执行结果保留多长时间（小时）</li>
+<li><code>EXECUTIONS_DATA_PRUNE_MAX_COUNT</code> 设置存储执行结果的最大条数</li>
+</ul>
+</li>
+</ul>
+<p>4.后续只需要通过容器命令或UI界面进行启停。</p>
+<p>5.运行后，浏览器打开首次进入n8n页面，只需第一步注册邮箱等，后续步骤可以跳过，直接进入操作页面。</p>
+<h3 id="2-2-以root用户身份进入n8n容器给node用户赋予权限"><a href="#2-2-以root用户身份进入n8n容器给node用户赋予权限" class="headerlink" title="2.2 以root用户身份进入n8n容器给node用户赋予权限"></a>2.2 以root用户身份进入n8n容器给node用户赋予权限</h3><p><strong>注：将 &#x2F;data 目录属主和属组变更为node，否则在工作流中保存文件到&#x2F;data下时会提示没有权限</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -u root -it n8n-zh sh</span><br><span class="line"><span class="built_in">chown</span> -R node:node /data</span><br><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDFWi5XHrPkdC2FK8F_qE26Nl7Gzg9AALvFwAC8N3JUeIK_Wdj4mTYNgQ.png" alt="image-20250904150829806"></p>
+<h3 id="2-3-n8n版本升级"><a href="#2-3-n8n版本升级" class="headerlink" title="2.3 n8n版本升级"></a>2.3 n8n版本升级</h3><p>1.n8n目前更新速度较快，当有新版本时，将收到消息通知：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDFmi5XII_mkn-Q3yyOBUopK-cBdN7AALxFwAC8N3JUZEy8DQI6GU_NgQ.png" alt="image-20250903102957817"></p>
+<p>2.停止正在运行中的n8n容器、拉取最新版本镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull docker.n8n.io/n8nio/n8n</span><br></pre></td></tr></table></figure>
+
+<p>3.删除之前创建的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">rm</span> n8n-zh</span><br></pre></td></tr></table></figure>
+
+<p>4.重新使用之前的容器运行命令，再次进入n8n页面可以看到已经是最新版本了：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDF2i5XIpIGMbGqnbvnAe5j-SvzILOAALyFwAC8N3JUVN4ZoeCgFTPNgQ.png" alt="image-20250903111957371"></p>
+<h2 id="3-n8n基本操作"><a href="#3-n8n基本操作" class="headerlink" title="3.n8n基本操作"></a>3.n8n基本操作</h2><h3 id="3-1-工作流列表页面"><a href="#3-1-工作流列表页面" class="headerlink" title="3.1 工作流列表页面"></a>3.1 工作流列表页面</h3><h4 id="3-1-1-创建、打开工作流等"><a href="#3-1-1-创建、打开工作流等" class="headerlink" title="3.1.1 创建、打开工作流等"></a>3.1.1 创建、打开工作流等</h4><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDGGi5XJLffTM1t5fB_pgMtjb1FXT8AALzFwAC8N3JUQ2jLKns7_GWNgQ.png" alt="image-20250903142648079"></p>
+<h4 id="3-1-2-删除工作流"><a href="#3-1-2-删除工作流" class="headerlink" title="3.1.2 删除工作流"></a>3.1.2 删除工作流</h4><p>2步法：先【存档】、再【删除】：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDGWi5XJrCmlqcIckrqKQbkDOg8TrNAAL0FwAC8N3JUZayMb1R09EhNgQ.png" alt="image-20250903182420192"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDGmi5XJ-ZV5yd07_NWBB69ZEo_jvlAAL1FwAC8N3JUc13IrNzxfi9NgQ.png" alt="image-20250903182621759"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDG2i5XKXMrmSPxrLzaZsP-GQ61uiFAAL2FwAC8N3JUXbvqnCFiZyANgQ.png" alt="image-20250903182703716"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDHGi5XKmZILr-6PGx0pXDSCZsuyG3AAL3FwAC8N3JUQzWDYZcomHdNgQ.png" alt="image-20250903182720506"></p>
+<h4 id="3-1-3-工作流运行情况"><a href="#3-1-3-工作流运行情况" class="headerlink" title="3.1.3 工作流运行情况"></a>3.1.3 工作流运行情况</h4><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDHWi5XK6N7QtvFEGEH_juhu4505-VAAL4FwAC8N3JUWIeWuBFe8mhNgQ.png" alt="image-20250904103401253"></p>
+<p>点击该列表中的工作流名称，可以查看该工作流的历史运行数据等：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDMGi5ZRVZrJwNMRY8hY5q5Y_d_fmSAAI9yjEb8N3JUesdJeR-ouQqAQADAgADeQADNgQ.png" alt="image-20250904103226694"></p>
+<h3 id="3-2-凭证"><a href="#3-2-凭证" class="headerlink" title="3.2 凭证"></a>3.2 凭证</h3><p>注：凭证通常在使用具体节点时进行配置</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDH2i5XNjyLuIW7vFrdh-dPzXq-_FAAAL6FwAC8N3JUXxQoxliAfQzNgQ.png" alt="image-20250903162701555"></p>
+<h3 id="3-3-工作流画布页面"><a href="#3-3-工作流画布页面" class="headerlink" title="3.3 工作流画布页面"></a>3.3 工作流画布页面</h3><p><font color="red"><strong>特别提醒：养成随时点【保存】的好习惯、没有自动保存功能！</strong></font></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDIGi5XOBnxcBWqgcVvF5ARZAgT5leAAL7FwAC8N3JURFQYvOfFpT-NgQ.png" alt="image-20250904101451780"></p>
+<p><font color="blue"><strong>Tips： 按住Ctrl键、鼠标变成小手状、点击鼠标左键可移动画布；按住Ctrl键、滚动鼠标滚轮可缩放画布；框选多个节点可一起移动、复制等。</strong></font></p>
+<h3 id="3-4-节点导入-导出和操作菜单"><a href="#3-4-节点导入-导出和操作菜单" class="headerlink" title="3.4 节点导入&#x2F;导出和操作菜单"></a>3.4 节点导入&#x2F;导出和操作菜单</h3><ul>
+<li>导入节点：复制节点或节点json、在工作流画布上【Ctrl+V】粘贴节点</li>
+<li>导出节点：复制节点、粘贴到文本文件中</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDIWi5XOeQNb77wxy_My4CrNzke5dqAAL8FwAC8N3JUcjsvpYX7h4LNgQ.png" alt="image-20250903150553965"></p>
+<h3 id="3-5-添加节点和连线-删除连线"><a href="#3-5-添加节点和连线-删除连线" class="headerlink" title="3.5 添加节点和连线&#x2F;删除连线"></a>3.5 添加节点和连线&#x2F;删除连线</h3><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDImi5XO_POUKm08Kq0MU49-hVo5YpAAL9FwAC8N3JUeuKBIvlWoMINgQ.png" alt="image-20250903152711709"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDI2i5XPRg7eypXrCMOeXUjR_kM_ZhAAL-FwAC8N3JUXvyAk5bl6wnNgQ.png" alt="image-20250903152845733"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDJGi5XPkb5QdOXtdefO0PWJdY2GkjAAL_FwAC8N3JURe5hTzBSZ6yNgQ.png" alt="image-20250903160356140"></p>
+<h3 id="3-6-节点详情页面"><a href="#3-6-节点详情页面" class="headerlink" title="3.6 节点详情页面"></a>3.6 节点详情页面</h3><p>双击节点或通过节点菜单进入节点详情页面：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDJWi5XP5bhRNjYZQ1t9PG-U2nwv_qAAMYAALw3clRsAP0QKqlRBw2BA.png" alt="image-20250903162209904"></p>
+<h3 id="3-7-JavaScript-Python代码调试"><a href="#3-7-JavaScript-Python代码调试" class="headerlink" title="3.7 JavaScript&#x2F;Python代码调试"></a>3.7 JavaScript&#x2F;Python代码调试</h3><p>目前只能通过输出日志的方式进行调试： JavaScript代码中添加<code>console.log(…)</code>、Python代码中添加<code>print(…)</code>；</p>
+<p>按F12打开浏览器调试窗口，测试节点、查看控制台输出：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDJmi5XQN2Pn_8UEMCHZ9vnt_sC8nOAAIBGAAC8N3JUaB5vP-a89zpNgQ.png" alt="image-20250903161213747"></p>
+<h3 id="3-8-查看工作流运行日志"><a href="#3-8-查看工作流运行日志" class="headerlink" title="3.8 查看工作流运行日志"></a>3.8 查看工作流运行日志</h3><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDJ2i5XQiks5CRSPQPQkfgeF1FmRpdAAICGAAC8N3JUSzlHJWF3mq6NgQ.png" alt="image-20250903162445041"></p>
+<h3 id="3-9-安装社区节点"><a href="#3-9-安装社区节点" class="headerlink" title="3.9 安装社区节点"></a>3.9 安装社区节点</h3><p>以安装<code>n8n-nodes-wechat-offiaccount</code>为例：</p>
+<p><em><code>n8n-nodes-wechat-offiaccount</code>是一个功能完善的微信公众号插件、包含了素材、草稿、发布等所有公众号相关功能接口，使用它可以很方便地实现自动发布公众号文章的工作流。</em></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDKGi5XQ2kaKKrCMKV_bWCDWUZwh4iAAIDGAAC8N3JUWZ_RuClE0EkNgQ.png" alt="image-20250903121741671"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDKWi5XRKoZ6cuzd3nNFhFEiX2baXLAAIEGAAC8N3JUZVbNdgDS53ANgQ.png" alt="image-20250903122202116"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDKmi5XRfCHst9aR9GDEHUkwgRF9ovAAIFGAAC8N3JUb1u8KZVPY10NgQ.png" alt="image-20250903122519595"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDK2i5XRzh4Rv6EUKaV6iPDCgvQwI_AAIGGAAC8N3JUUi91Gu3_R0nNgQ.png" alt="image-20250904101724169"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDLGi5XSJy8MGfOLyLEZKkMuYr-ddSAAIHGAAC8N3JUWr0Ha4Za1MLNgQ.png" alt="image-20250904101824795"></p>
+<p>等待安装完成：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/BQACAgQAAyEGAASSpnvdAAIDLWi5XSaYs9IAAd0q8qLkpDsjDNLKswACCBgAAvDdyVGztyucIQXHvjYE.png" alt="image-20250904101914181"></p>
+<h1 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/n8n-io/n8n">n8n GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://n8n.io/">n8n官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.n8n.io/">n8n官方文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/other-blowsnow/n8n-i18n-chinese">n8n汉化包 GitHub</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/n8n-nodes-wechat-offiaccount">n8n-nodes-wechat-offiaccount</a></li>
+<li>2000+ n8n工作流（<a target="_blank" rel="noopener" href="https://github.com/Zie619/n8n-workflows">GitHub</a>、<a target="_blank" rel="noopener" href="https://pan.quark.cn/s/4fe6ac42f045">夸克</a>、<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1bvDnFCyoUP1QBDoFhs3tUg?pwd=x8zt">度盘</a>）</li>
+</ul>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/258a0c99a22a53ebb79a6.png" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/258a0c99a22a53ebb79a6.png" title="头像" alt="头像"></a><div class="post-copyright__author_name">程序员老姐姐</div><div class="post-copyright__author_desc">做人最重要开心</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="https://lori888.github.io/2025/09/03/workflow-n8n/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('https://lori888.github.io/2025/09/03/workflow-n8n/')">n8n笔记：docker部署与基本操作</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="https://image.joy666.top/file/03a672bb2b8837721c45b.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/03a672bb2b8837721c45b.png" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="https://image.joy666.top/file/fac183feae10ae6380566.png" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/fac183feae10ae6380566.png" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="https://lori888.github.io/2025/09/03/workflow-n8n/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=n8n笔记：docker部署与基本操作&amp;url=https://lori888.github.io/2025/09/03/workflow-n8n/&amp;pic=https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://lori888.github.io" target="_blank">1024部落格</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>工作流<span class="tagsPageCount">1</span></a><a class="post-meta__box__tags" href="/tags/n8n/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>n8n<span class="tagsPageCount">1</span></a></div></div></div><div class="post_share"><div class="social-share" data-image="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/2025/07/14/GitHub-2FA/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC1Wh0sklHZFJ4QmQvtHeSy2t3NJB4AALtxTEbK5yoU3Dksts4SyMAAQEAAwIAA3kAAzYE.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GitHub 2FA 笔记</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div></div><div class="comment-wrap"><div><div id="waline-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/258a0c99a22a53ebb79a6.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__description">爱学习 爱折腾</div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">程序员老姐姐</h1><div class="author-info__desc">做人最重要开心</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/Lori888" target="_blank" title="Github"><i class="anzhiyufont anzhiyu-icon-github"></i></a></div></div></div></div><div class="card-widget anzhiyu-right-widget" id="card-wechat" onclick="null"><div id="flip-wrapper"><div id="flip-content"><div class="face" style="background: url(https://bu.dusays.com/2023/01/13/63c02edf44033.png) center center / 100% no-repeat"></div><div class="back face" style="background: url(https://image.joy666.top/file/0827c1ca9999ee272a16f.png) center center / 100% no-repeat"></div></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-text">n8n笔记：docker部署与基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%9D%A1%E4%BB%B6%E4%B8%8E%E7%8E%AF%E5%A2%83"><span class="toc-text">1.条件与环境</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="toc-text">1.1 前提条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E6%9C%AC%E6%96%87%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83"><span class="toc-text">1.2 本文运行环境</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85%E8%BF%90%E8%A1%8C"><span class="toc-text">2.安装运行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-docker%E9%83%A8%E7%BD%B2n8n%E6%B1%89%E5%8C%96%E7%89%88%E6%9C%AC"><span class="toc-text">2.1 docker部署n8n汉化版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E4%BB%A5root%E7%94%A8%E6%88%B7%E8%BA%AB%E4%BB%BD%E8%BF%9B%E5%85%A5n8n%E5%AE%B9%E5%99%A8%E7%BB%99node%E7%94%A8%E6%88%B7%E8%B5%8B%E4%BA%88%E6%9D%83%E9%99%90"><span class="toc-text">2.2 以root用户身份进入n8n容器给node用户赋予权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-n8n%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7"><span class="toc-text">2.3 n8n版本升级</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-n8n%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-text">3.n8n基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%88%97%E8%A1%A8%E9%A1%B5%E9%9D%A2"><span class="toc-text">3.1 工作流列表页面</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-1-%E5%88%9B%E5%BB%BA%E3%80%81%E6%89%93%E5%BC%80%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%AD%89"><span class="toc-text">3.1.1 创建、打开工作流等</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-2-%E5%88%A0%E9%99%A4%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">3.1.2 删除工作流</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-3-%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%BF%90%E8%A1%8C%E6%83%85%E5%86%B5"><span class="toc-text">3.1.3 工作流运行情况</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E5%87%AD%E8%AF%81"><span class="toc-text">3.2 凭证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%94%BB%E5%B8%83%E9%A1%B5%E9%9D%A2"><span class="toc-text">3.3 工作流画布页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-%E8%8A%82%E7%82%B9%E5%AF%BC%E5%85%A5-%E5%AF%BC%E5%87%BA%E5%92%8C%E6%93%8D%E4%BD%9C%E8%8F%9C%E5%8D%95"><span class="toc-text">3.4 节点导入&#x2F;导出和操作菜单</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9%E5%92%8C%E8%BF%9E%E7%BA%BF-%E5%88%A0%E9%99%A4%E8%BF%9E%E7%BA%BF"><span class="toc-text">3.5 添加节点和连线&#x2F;删除连线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-6-%E8%8A%82%E7%82%B9%E8%AF%A6%E6%83%85%E9%A1%B5%E9%9D%A2"><span class="toc-text">3.6 节点详情页面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-7-JavaScript-Python%E4%BB%A3%E7%A0%81%E8%B0%83%E8%AF%95"><span class="toc-text">3.7 JavaScript&#x2F;Python代码调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-8-%E6%9F%A5%E7%9C%8B%E5%B7%A5%E4%BD%9C%E6%B5%81%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97"><span class="toc-text">3.8 查看工作流运行日志</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-9-%E5%AE%89%E8%A3%85%E7%A4%BE%E5%8C%BA%E8%8A%82%E7%82%B9"><span class="toc-text">3.9 安装社区节点</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5"><span class="toc-text">相关链接</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/09/03/workflow-n8n/" title="n8n笔记：docker部署与基本操作"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIDLmi5ZKWqzBTfYKVS5nMew2jaECAOAAI6yjEb8N3JUahjHdGYCbcxAQADAgADeAADNgQ.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="n8n笔记：docker部署与基本操作"/></a><div class="content"><a class="title" href="/2025/09/03/workflow-n8n/" title="n8n笔记：docker部署与基本操作">n8n笔记：docker部署与基本操作</a><time datetime="2025-09-02T16:00:00.000Z" title="发表于 2025-09-03 00:00:00">2025-09-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/14/GitHub-2FA/" title="GitHub 2FA 笔记"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC1Wh0sklHZFJ4QmQvtHeSy2t3NJB4AALtxTEbK5yoU3Dksts4SyMAAQEAAwIAA3kAAzYE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GitHub 2FA 笔记"/></a><div class="content"><a class="title" href="/2025/07/14/GitHub-2FA/" title="GitHub 2FA 笔记">GitHub 2FA 笔记</a><time datetime="2025-07-13T16:00:00.000Z" title="发表于 2025-07-14 00:00:00">2025-07-14</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/11/MCP-sdk-jdk8/" title="打破版本枷锁！MCP SDK成功降级至JDK8，完美兼容老旧系统！StreamableHttpServer/Client 全支持！"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC7WiDXEHATcHtvoOgSlq2zz75icQHAAJExzEbEqYhUGvF7gyrpNv3AQADAgADeAADNgQ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="打破版本枷锁！MCP SDK成功降级至JDK8，完美兼容老旧系统！StreamableHttpServer/Client 全支持！"/></a><div class="content"><a class="title" href="/2025/07/11/MCP-sdk-jdk8/" title="打破版本枷锁！MCP SDK成功降级至JDK8，完美兼容老旧系统！StreamableHttpServer/Client 全支持！">打破版本枷锁！MCP SDK成功降级至JDK8，完美兼容老旧系统！StreamableHttpServer/Client 全支持！</a><time datetime="2025-07-10T16:00:00.000Z" title="发表于 2025-07-11 00:00:00">2025-07-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/21/CherryStudio-MCP/" title="Cherry Studio中使用MCP"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAIC0mgtS60BbmACTP5H6CEq9Zg_91s1AAIrxzEbk5FoUXUvYj5CZzPAAQADAgADeQADNgQ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Cherry Studio中使用MCP"/></a><div class="content"><a class="title" href="/2025/05/21/CherryStudio-MCP/" title="Cherry Studio中使用MCP">Cherry Studio中使用MCP</a><time datetime="2025-05-20T16:00:00.000Z" title="发表于 2025-05-21 00:00:00">2025-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/05/19/VSCode-MCP/" title="VSCode中使用MCP"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.joy666.top/file/AgACAgQAAyEGAASSpnvdAAICw2grBc3su5hcJlQdwFIjntSwtszjAALDxjEbnpVYUdPMyriBBGYuAQADAgADeQADNgQ.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VSCode中使用MCP"/></a><div class="content"><a class="title" href="/2025/05/19/VSCode-MCP/" title="VSCode中使用MCP">VSCode中使用MCP</a><time datetime="2025-05-18T16:00:00.000Z" title="发表于 2025-05-19 00:00:00">2025-05-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2024 - 2025 By <a class="footer-bar-link" href="/" title="程序员老姐姐" target="_blank">程序员老姐姐</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  getScript('https://sdk.jinrishici.com/v2/browser/jinrishici.js').then(() => {
+    jinrishici.load(result =>{
+      if (false) {
+        const sub = []
+        const content = result.data.content
+        sub.unshift(content)
+        window.typed = new Typed('#footer-type-tips', {
+          strings: sub,
+          startDelay: 300,
+          typeSpeed: 150,
+          loop: true,
+          backSpeed: 50,
+        })
+      } else {
+        document.getElementById('footer-type-tips').innerHTML = result.data.content
+      }
+    })
+  })
+}
+
+if (false) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.1.0/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}
+</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://image.joy666.top" title="图床">图床</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://blog.joy666.top" title="隐秘的角落">隐秘的角落</a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">41</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">9</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://blog.joy666.top/" title="海外分部"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="海外分部"/><span class="back-menu-item-text">海外分部</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://pan.joy666.top/" title="部落网盘"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="部落网盘"/><span class="back-menu-item-text">部落网盘</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.joy666.top/" title="部落图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/favicon.ico" alt="部落图床"/><span class="back-menu-item-text">部落图床</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">项目</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://image.anheyu.com/" title="安知鱼图床"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://image.anheyu.com/favicon.ico" alt="安知鱼图床"/><span class="back-menu-item-text">安知鱼图床</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives/"><i class="anzhiyufont anzhiyu-icon-box-archive faa-tada" style="font-size: 0.9em;"></i><span> 全部文章</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories/"><i class="anzhiyufont anzhiyu-icon-shapes faa-tada" style="font-size: 0.9em;"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags faa-tada" style="font-size: 0.9em;"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/music/?id=12947844738&amp;server=netease"><i class="anzhiyufont anzhiyu-icon-music faa-tada" style="font-size: 0.9em;"></i><span> 音乐馆</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/about/"><i class="anzhiyufont anzhiyu-icon-paper-plane faa-tada" style="font-size: 0.9em;"></i><span> 关于本人</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="anzhiyufont anzhiyu-icon-shoe-prints1 faa-tada" style="font-size: 0.9em;"></i><span> 随便逛逛</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/2FA/" style="font-size: 0.88rem;">2FA<sup>1</sup></a><a href="/tags/AGI/" style="font-size: 0.88rem;">AGI<sup>4</sup></a><a href="/tags/Android/" style="font-size: 0.88rem;">Android<sup>5</sup></a><a href="/tags/Blog/" style="font-size: 0.88rem;">Blog<sup>4</sup></a><a href="/tags/B%E7%AB%99/" style="font-size: 0.88rem;">B站<sup>1</sup></a><a href="/tags/Cherry-Studio/" style="font-size: 0.88rem;">Cherry Studio<sup>1</sup></a><a href="/tags/Cline/" style="font-size: 0.88rem;">Cline<sup>1</sup></a><a href="/tags/Cursor/" style="font-size: 0.88rem;">Cursor<sup>1</sup></a><a href="/tags/GitHub/" style="font-size: 0.88rem;">GitHub<sup>2</sup></a><a href="/tags/Hexo/" style="font-size: 0.88rem;">Hexo<sup>3</sup></a><a href="/tags/Java/" style="font-size: 0.88rem;">Java<sup>6</sup></a><a href="/tags/LLM/" style="font-size: 0.88rem;">LLM<sup>4</sup></a><a href="/tags/MCP/" style="font-size: 0.88rem;">MCP<sup>9</sup></a><a href="/tags/MCP-Client/" style="font-size: 0.88rem;">MCP Client<sup>1</sup></a><a href="/tags/MCP-Server/" style="font-size: 0.88rem;">MCP Server<sup>1</sup></a><a href="/tags/NPE/" style="font-size: 0.88rem;">NPE<sup>1</sup></a><a href="/tags/Notion/" style="font-size: 0.88rem;">Notion<sup>1</sup></a><a href="/tags/NotionNext/" style="font-size: 0.88rem;">NotionNext<sup>1</sup></a><a href="/tags/PowerShell/" style="font-size: 0.88rem;">PowerShell<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem;">Python<sup>5</sup></a><a href="/tags/Spring/" style="font-size: 0.88rem;">Spring<sup>2</sup></a><a href="/tags/Spring-AI/" style="font-size: 0.88rem;">Spring AI<sup>1</sup></a><a href="/tags/SpringBoot/" style="font-size: 0.88rem;">SpringBoot<sup>2</sup></a><a href="/tags/Tomcat/" style="font-size: 0.88rem;">Tomcat<sup>2</sup></a><a href="/tags/Troubleshooting/" style="font-size: 0.88rem;">Troubleshooting<sup>1</sup></a><a href="/tags/VSCode/" style="font-size: 0.88rem;">VSCode<sup>2</sup></a><a href="/tags/Win10/" style="font-size: 0.88rem;">Win10<sup>1</sup></a><a href="/tags/YouTube/" style="font-size: 0.88rem;">YouTube<sup>1</sup></a><a href="/tags/iOS/" style="font-size: 0.88rem;">iOS<sup>1</sup></a><a href="/tags/shell/" style="font-size: 0.88rem;">shell<sup>1</sup></a><a href="/tags/uv/" style="font-size: 0.88rem;">uv<sup>1</sup></a><a href="/tags/xapk/" style="font-size: 0.88rem;">xapk<sup>1</sup></a><a href="/tags/%E5%AE%9D%E8%97%8F/" style="font-size: 0.88rem;">宝藏<sup>2</sup></a><a href="/tags/%E5%B7%A5%E4%BD%9C%E6%B5%81/" style="font-size: 0.88rem;">工作流<sup>1</sup></a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 0.88rem;">开源<sup>4</sup></a><a href="/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/" style="font-size: 0.88rem;">快捷键<sup>1</sup></a><a href="/tags/%E6%8A%95%E5%B1%8F/" style="font-size: 0.88rem;">投屏<sup>2</sup></a><a href="/tags/%E6%B5%81%E5%AA%92%E4%BD%93/" style="font-size: 0.88rem;">流媒体<sup>3</sup></a><a href="/tags/%E6%BF%80%E6%B4%BB/" style="font-size: 0.88rem;">激活<sup>1</sup></a><a href="/tags/%E8%B0%83%E8%AF%95/" style="font-size: 0.88rem;">调试<sup>1</sup></a></div></div><hr/></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="nav-music"><a id="nav-music-hoverTips" onclick="anzhiyu.musicToggle()" accesskey="m">播放音乐</a><div id="console-music-bg"></div><meting-js id="5456027126" server="netease" type="playlist" mutex="true" preload="none" theme="var(--anzhiyu-main)" data-lrctype="0" order="random" volume="0.7"></meting-js></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="is-center" id="loading-database"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-pulse-icon"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://music.163.com/playlist?id=5456027126&amp;userid=3968879598&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.28/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.5/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.cbd.int/pangu@4.0.7/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script>// 消除控制台打印
+var HoldLog = console.log;
+console.log = function () {};
+let now1 = new Date();
+queueMicrotask(() => {
+  const Log = function () {
+    HoldLog.apply(console, arguments);
+  }; //在恢复前输出日志
+  const grt = new Date("04/01/2021 00:00:00"); //此处修改你的建站时间或者网站上线时间
+  now1.setTime(now1.getTime() + 250);
+  const days = (now1 - grt) / 1000 / 60 / 60 / 24;
+  const dnum = Math.floor(days);
+  const ascll = [
+    `欢迎使用安知鱼!`,
+    `生活明朗, 万物可爱`,
+    `
+        
+       █████╗ ███╗   ██╗███████╗██╗  ██╗██╗██╗   ██╗██╗   ██╗
+      ██╔══██╗████╗  ██║╚══███╔╝██║  ██║██║╚██╗ ██╔╝██║   ██║
+      ███████║██╔██╗ ██║  ███╔╝ ███████║██║ ╚████╔╝ ██║   ██║
+      ██╔══██║██║╚██╗██║ ███╔╝  ██╔══██║██║  ╚██╔╝  ██║   ██║
+      ██║  ██║██║ ╚████║███████╗██║  ██║██║   ██║   ╚██████╔╝
+      ╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝   ╚═╝    ╚═════╝
+        
+        `,
+    "已上线",
+    dnum,
+    "天",
+    "©2024 By 安知鱼 V1.6.12",
+  ];
+  const ascll2 = [`NCC2-036`, `调用前置摄像头拍照成功，识别为【小笨蛋】.`, `Photo captured: `, `🤪`];
+
+  setTimeout(
+    Log.bind(
+      console,
+      `\n%c${ascll[0]} %c ${ascll[1]} %c ${ascll[2]} %c${ascll[3]}%c ${ascll[4]}%c ${ascll[5]}\n\n%c ${ascll[6]}\n`,
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      "color:#425AEF",
+      "",
+      "color:#425AEF",
+      ""
+    )
+  );
+  setTimeout(
+    Log.bind(
+      console,
+      `%c ${ascll2[0]} %c ${ascll2[1]} %c \n${ascll2[2]} %c\n${ascll2[3]}\n`,
+      "color:white; background-color:#4fd953",
+      "",
+      "",
+      'background:url("https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/tinggge.gif") no-repeat;font-size:450%'
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c WELCOME %c 你好，小笨蛋.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(
+      console,
+      "%c ⚡ Powered by 安知鱼 %c 你正在访问 程序员老姐姐 的博客.",
+      "color:white; background-color:#f0ad4e",
+      ""
+    )
+  );
+
+  setTimeout(Log.bind(console, "%c W23-12 %c 你已打开控制台.", "color:white; background-color:#4f90d9", ""));
+
+  setTimeout(
+    console.warn.bind(console, "%c S013-782 %c 你现在正处于监控中.", "color:white; background-color:#d9534f", "")
+  );
+});</script><script async src="/anzhiyu/random.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>(() => {
+  const initWaline = () => {
+    const waline = Waline.init(Object.assign({
+      el: '#waline-wrap',
+      serverURL: 'https://comments.joy666.top/',
+      pageview: false,
+      dark: 'html[data-theme="dark"]',
+      path: window.location.pathname,
+      comment: false,
+    }, null))
+  }
+
+  const loadWaline = async () => {
+    if (typeof Waline === 'object') initWaline()
+    else {
+      await getCSS('https://cdn.cbd.int/@waline/client@2.15.5/dist/waline.css')
+      await getScript('https://cdn.cbd.int/@waline/client@2.15.5/dist/waline.js')
+      initWaline()
+    }
+  }
+
+  if ('Waline' === 'Waline' || !true) {
+    if (true) anzhiyu.loadComment(document.getElementById('waline-wrap'),loadWaline)
+    else setTimeout(loadWaline, 0)
+  } else {
+    window.loadOtherComment = loadWaline
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"></div><script>window.addEventListener('load', () => {
+  const changeContent = content => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick} / </span><time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom && ($dom.innerHTML= result)
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const getComment = async () => {
+    try {
+      const res = await fetch('https://comments.joy666.top/api/comment?type=recent&count=6', { method: 'GET' })
+      const result = await res.json()
+      const walineArray = result.data.map(e => {
+        return {
+          'content': changeContent(e.comment),
+          'avatar': e.avatar,
+          'nick': e.nick,
+          'url': e.url + '#' + e.objectId,
+          'date': e.time || e.insertedAt
+        }
+      })
+      saveToLocal.set('waline-newest-comments', JSON.stringify(walineArray), 10/(60*24))
+      generateHtml(walineArray)
+    } catch (err) {
+      console.error(err)
+      const $dom = document.querySelector('#card-newest-comments .aside-list')
+      $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+    }
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('waline-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script>var visitorMail = "visitor@mail.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
