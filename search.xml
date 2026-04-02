@@ -184,6 +184,8 @@
       
         <tags>
             
+            <tag> RSS </tag>
+            
             <tag> 视频号 </tag>
             
             <tag> 微信视频号 </tag>
@@ -191,8 +193,6 @@
             <tag> 蝴蝶号 </tag>
             
             <tag> 视频号下载 </tag>
-            
-            <tag> RSS </tag>
             
         </tags>
       
@@ -219,9 +219,9 @@
             
             <tag> 公众号 </tag>
             
-            <tag> RSS </tag>
-            
             <tag> 公众号下载 </tag>
+            
+            <tag> RSS </tag>
             
         </tags>
       
